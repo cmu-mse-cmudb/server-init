@@ -6,6 +6,7 @@
     pkg:
       - vim
       - curl
+      - htop
       - net-tools
       - iptables
     update_cache: yes

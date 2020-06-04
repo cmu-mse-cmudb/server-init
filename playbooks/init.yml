@@ -7,3 +7,4 @@
     - install_basics
     - install_docker
     - install_python3.7
+    - install_openresty

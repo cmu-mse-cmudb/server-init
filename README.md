@@ -25,8 +25,9 @@ The servers are grouped as followed
 Currently, it will install and configure the following items on the servers
 - Linux basic tools
   - vim
-  - net-tools
+  - htop
   - curl
+  - net-tools
   - iptables
 - Docker
   - start and enable the docker daemon

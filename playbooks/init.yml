@@ -3,6 +3,7 @@
 - name: init server
   hosts: "{{ env }}"
   roles:
+    - config_bash
     - install_basics
     - install_docker
     - install_python3.7

@@ -1,0 +1,23 @@
+[all:children]
+k8s-master
+k8s-worker
+
+[k8s-master:children]
+# list of k8s master hostname/ip
+
+[k8s-worker:children]
+testing
+staging
+production
+
+[all:vars]
+ansible_user = 
+
+[testing]
+# list of testing env hostname/ip
+
+[staging]
+# list of staging env hostname/ip
+
+[production]
+# list of production env hostname/ip

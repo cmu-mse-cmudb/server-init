@@ -2,22 +2,37 @@
 k8s_master
 k8s_worker
 
+[all:vars]
+# list of vars for all nodes
+ansible_user = 
+
 [k8s_master]
 # list of k8s master hostname/ip
+incrudibles-k8s.db.pdl.cmu.edu
+
+[k8s_master:vars]
+# list of vars for all k8s master nodes
+k8s_role = master
+k8s_user = jenkins
+k8s_network_cidr = 10.244.0.0/16
+k8s_flannel_src_url = https://raw.githubusercontent.com/coreos/flannel/v0.12.0/Documentation/kube-flannel.yml
 
 [k8s_worker:children]
 testing
 staging
 production
 
-[all:vars]
-ansible_user = 
+[k8s_worker:vars]
+# list of vars for all k8s worker nodes
+k8s_role = worker
 
 [testing]
 # list of testing env hostname/ip
+incrudibles-testing.db.pdl.cmu.edu
 
 [staging]
 # list of staging env hostname/ip
+incrudibles-staging.db.pdl.cmu.edu
 
 [production]
 # list of production env hostname/ip

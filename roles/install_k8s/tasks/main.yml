@@ -1,39 +1,46 @@
 ---
 
-# the apt package name for 'snap' is 'snapd'
-- name: ensure snap is ready
+- name: config the k8s user on the master node
   become: yes
-  apt:
-    name: snapd
-    update_cache: yes
+  import_tasks: config_user.yml
+  when:
+    - k8s_role is defined
+    - k8s_role == "master"
 
-- name: get remote env vars
-  setup:
-    gather_subset:
-      - "env"
-
-- name: ensure /snap/bin exists in PATH
+- name: install the kubernetes dependencies
   become: yes
-  lineinfile:
-    path: /etc/environment
-    regexp: "^PATH="
-    line: "PATH=\"/snap/bin:{{ ansible_env.PATH }}\""
-  when: ansible_env.PATH is not search("/snap/bin:")
+  import_tasks: install.yml
 
-# kubectl: CLI for k8s on each node (master or worker)
-# kubelet: daemon agent on each node (master or worker)
-- name: install kubectl and kubelet on each node
+- name: check current cluster info
   become: yes
-  snap:
-    name: kubectl
-    classic: yes
+  command: kubectl cluster-info
+  register: result_cluster
+  ignore_errors: yes
+  when:
+    - k8s_role is defined
+    - k8s_role == "master"
 
-- name: install kubeadm on the master node
-  become: yess
-  snap:
-    name: kubeadm
-    classic: yes
-  when: env == "k8s_master"
+- name: config the kubernetes master node
+  become: yes
+  # import_tasks: init_cluster.yml
+  debug:
+    msg: ready to init a k8s cluster
+  when:
+    - k8s_role is defined
+    - k8s_role == "master"
+    - result_cluster.rc is defined
+    - result_cluster.rc != 0
+
+# # DONT automate joining in the cluster
+# # Manually join the nodes
+# - name: config the kubernetes worker node
+#   become: yes
+#   import_tasks: join_cluster.yml
+#   when:
+#     - k8s_role is defined
+#     - k8s_role == "worker"
+#     - result_cluster.rc is defined
+#     - result_cluster.rc != 0
   
 
 

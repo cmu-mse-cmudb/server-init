@@ -10,3 +10,4 @@
     - install_openresty
     - install_k8s
     - install_noisepage_dependencies
+    - install_sqlsmith

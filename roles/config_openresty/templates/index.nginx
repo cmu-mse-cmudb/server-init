@@ -35,7 +35,7 @@ server {
     }
 
     # k8s: django api of the performance storage service
-    location /performance-results {
+    location /performance-results/ {
         proxy_pass_header   Set-Cookie;
 
         proxy_set_header    Host               $host;
@@ -47,7 +47,7 @@ server {
     }
 
     # k8s: grafana service
-    location /grafana {
+    location /grafana/ {
         proxy_pass_header   Set-Cookie;
         
         proxy_set_header    Host               $host;

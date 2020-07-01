@@ -1,9 +1,9 @@
 upstream pss {
-    server localhost:30001;
+    server localhost:{{ port_pss }};
 }
 
 upstream grafana {
-    server localhost:30002;
+    server localhost:{{ port_grafana }};
 }
 
 server {
@@ -15,11 +15,10 @@ server {
     access_log          /var/log/openresty/{{ hostname }}/access.log;
     error_log           /var/log/openresty/{{ hostname }}/error.log;
 
-    # # default redirection
-    # # TODO: uncomment this when grafana config is updated
-    # location / {
-    #     return 301 /grafana;
-    # }
+    # default redirection
+    location / {
+        return 301 /grafana;
+    }
 
     location /sqlsmith/results {
         alias /var/www/sqlsmith/results;

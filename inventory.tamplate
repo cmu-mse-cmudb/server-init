@@ -30,9 +30,24 @@ k8s_role = worker
 # list of testing env hostname/ip
 incrudibles-testing.db.pdl.cmu.edu
 
+[testing:vars]
+# list of vars for all testing env nodes
+port_pss = 30001
+port_grafana = 30002
+
 [staging]
 # list of staging env hostname/ip
 incrudibles-staging.db.pdl.cmu.edu
 
+[staging:vars]
+# list of vars for all staging env nodes
+port_pss = 31001
+port_grafana = 31002
+
 [production]
 # list of production env hostname/ip
+
+[production:vars]
+# list of vars for all production env nodes
+port_pss = 32001
+port_grafana = 32002

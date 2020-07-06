@@ -3,9 +3,6 @@
 - name: config the k8s user on the master node
   become: yes
   import_tasks: config_user.yml
-  when:
-    - k8s_role is defined
-    - k8s_role == "master"
 
 - name: install the kubernetes dependencies
   become: yes

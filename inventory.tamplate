@@ -25,6 +25,7 @@ production
 [k8s_worker:vars]
 # list of vars for all k8s worker nodes
 k8s_role = worker
+k8s_user = jenkins
 
 [testing]
 # list of testing env hostname/ip

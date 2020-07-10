@@ -33,6 +33,14 @@ server {
         }
     }
 
+    location /sqlancer/logs {
+        alias /var/www/sqlancer/logs;
+        autoindex on;
+        types {
+            text/plain log csv;
+        }
+    }
+
     location /static {
         alias /data/static;
         autoindex on;

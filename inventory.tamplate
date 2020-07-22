@@ -47,6 +47,7 @@ port_grafana = 31002
 
 [production]
 # list of production env hostname/ip
+incrudibles-production.db.pdl.cmu.edu
 
 [production:vars]
 # list of vars for all production env nodes

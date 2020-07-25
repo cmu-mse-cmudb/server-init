@@ -6,5 +6,6 @@
     hostname: "{{ inventory_hostname }}"
     dir_openresty: /etc/openresty
     dir_openresty_conf: "{{ dir_openresty }}/conf.d"
+    dir_openresty_log: "/var/log/openresty/{{ hostname }}"
   roles:
     - config_openresty

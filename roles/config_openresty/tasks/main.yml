@@ -20,6 +20,14 @@
     src: index.nginx
     dest: "{{ dir_openresty_conf }}"
 
+- name: ensure log dir exists
+  become: yes
+  file:
+    path: "{{ dir_openresty_log }}"
+    state: directory
+    owner: root
+    mode: "0755"
+
 - name: test config syntax
   become: yes
   command: openresty -t

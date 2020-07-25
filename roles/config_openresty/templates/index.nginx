@@ -12,8 +12,8 @@ server {
     server_name         {{ hostname }};
 
     # log config
-    access_log          /var/log/openresty/{{ hostname }}/access.log;
-    error_log           /var/log/openresty/{{ hostname }}/error.log;
+    access_log          {{ dir_openresty_log }}/access.log;
+    error_log           {{ dir_openresty_log }}/error.log;
 
     # # default redirection
     # location / {

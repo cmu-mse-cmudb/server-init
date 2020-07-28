@@ -86,4 +86,17 @@ server {
 
         proxy_pass http://grafana/;
     }
+
+    {% if env == "production" %}
+    # ************************** DO NOT REMOVE THIS **************************
+    # this is hacky dark magic that made the cross site oauth between github
+    # and grafana possible for the stats.noise.page and the incrudibles site
+    # ************************************************************************
+    location /grafana/login/github {
+        if ($cookie_oauth_state = "") {
+            return 301      https://{{ noisepage_hostname }}$request_uri;
+        }
+    }
+    {% endif %}
+    
 }

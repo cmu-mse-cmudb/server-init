@@ -14,19 +14,20 @@
     owner: root
     mode: "0755"
 
-- name: update the index.nginx
+- name: update the "{{ hostname }}"
   become: yes
-  template:
-    src: index.nginx
-    dest: "{{ dir_openresty_conf }}"
+  import_tasks: update_conf.yml
+  vars:
+    domain: "{{ hostname }}"
+    conf_template: internal.nginx
 
-- name: ensure log dir exists
+- name: update the "{{ hostname }}"
   become: yes
-  file:
-    path: "{{ dir_openresty_log }}"
-    state: directory
-    owner: root
-    mode: "0755"
+  import_tasks: update_conf.yml
+  vars:
+    domain: "{{ noisepage_hostname }}"
+    conf_template: external.nginx
+  when: env == "production"
 
 - name: test config syntax
   become: yes

@@ -5,6 +5,7 @@ k8s_worker
 [all:vars]
 # list of vars for all nodes
 ansible_user = 
+noisepage_hostname = stats.noise.page
 
 [k8s_master]
 # list of k8s master hostname/ip

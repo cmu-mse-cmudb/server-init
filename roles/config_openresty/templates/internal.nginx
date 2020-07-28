@@ -10,15 +10,32 @@ server {
     listen              80;
     resolver            8.8.8.8;
     server_name         {{ hostname }};
+    return 301          https://$host$request_uri;
+}
+
+server {
+    listen              443 ssl;
+    resolver            8.8.8.8;
+    server_name         {{ hostname }};
+
+    # ssl config
+    ssl_certificate     /etc/openresty/ssl/{{ hostname }}/cert.pem;
+    ssl_certificate_key /etc/openresty/ssl/{{ hostname }}/key.pem;
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
 
     # log config
-    access_log          {{ dir_openresty_log }}/access.log;
-    error_log           {{ dir_openresty_log }}/error.log;
+    access_log          {{ dir_openresty_internal_log }}/access.log;
+    error_log           {{ dir_openresty_internal_log }}/error.log;
 
-    # # default redirection
-    # location / {
-    #     return 301 /grafana;
-    # }
+    # default redirection
+    location / {
+        return 301 /grafana;
+    }
+
+    location ^~ /.well-known/acme-challenge {
+        root /etc/openresty/ssl/$host;
+    }
 
     location /sqlsmith/results {
         alias /var/www/sqlsmith/results;

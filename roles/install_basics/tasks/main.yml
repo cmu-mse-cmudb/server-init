@@ -13,5 +13,9 @@
       - rsync
     update_cache: yes
 
+- name: install acme.sh
+  become: yes
+  shell: |
+    curl https://get.acme.sh | sh
 
   

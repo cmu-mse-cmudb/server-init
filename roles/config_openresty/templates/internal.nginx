@@ -77,6 +77,26 @@ server {
 
     # k8s: grafana service
     location /grafana/ {
+{% if env == "production" %}
+        # ************************ DO NOT REMOVE THIS ************************
+        # this is the hacky dark magic that made the cross site oauth between
+        # the github and the grafana possible for {{ noisepage_hostname }} and
+        # {{ hostname }}
+        # ********************************************************************
+        access_by_lua_block {
+            is_empty = function(x)
+                return x == nil or x == ""
+            end
+
+            if not is_empty(ngx.var.request_uri) and
+               ngx.var.request_uri:find("/grafana/login/github") == 1 and
+               not is_empty(ngx.var.query_string) and
+               is_empty(ngx.var.cookie_oauth_state) then
+                return ngx.redirect("https://{{ noisepage_hostname }}"..ngx.var.request_uri)
+            end
+        }
+{% endif %}
+
         proxy_pass_header   Set-Cookie;
         
         proxy_set_header    Host               $host;
@@ -86,17 +106,4 @@ server {
 
         proxy_pass http://grafana/;
     }
-
-    {% if env == "production" %}
-    # ************************** DO NOT REMOVE THIS **************************
-    # this is hacky dark magic that made the cross site oauth between github
-    # and grafana possible for the stats.noise.page and the incrudibles site
-    # ************************************************************************
-    location /grafana/login/github {
-        if ($cookie_oauth_state = "") {
-            return 301      https://{{ noisepage_hostname }}$request_uri;
-        }
-    }
-    {% endif %}
-    
 }

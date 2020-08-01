@@ -6,6 +6,10 @@ upstream grafana {
     server localhost:{{ port_grafana }};
 }
 
+upstream prometheus {
+    server localhost:{{ port_prometheus }};
+}
+
 server {
     listen              80;
     resolver            8.8.8.8;
@@ -61,6 +65,18 @@ server {
     location /static {
         alias /data/static;
         autoindex on;
+    }
+
+    # k8s: prometheus monitoring
+    location /prometheus/ {
+        proxy_pass_header   Set-Cookie;
+
+        proxy_set_header    Host               $host;
+        proxy_set_header    X-Real-IP          $remote_addr;
+        proxy_set_header    X-Forwarded-Proto  $scheme;
+        proxy_set_header    X-Forwarded-For    $proxy_add_x_forwarded_for;
+
+        proxy_pass http://prometheus/;
     }
 
     # k8s: django api of the performance storage service

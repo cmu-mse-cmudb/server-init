@@ -6,6 +6,7 @@ k8s_worker
 # list of vars for all nodes
 ansible_user = 
 noisepage_hostname = stats.noise.page
+port_prometheus = 30000
 
 [k8s_master]
 # list of k8s master hostname/ip

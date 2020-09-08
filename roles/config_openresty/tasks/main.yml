@@ -14,20 +14,33 @@
     owner: root
     mode: "0755"
 
-- name: update the "{{ hostname }}"
-  become: yes
-  import_tasks: update_conf.yml
-  vars:
-    domain: "{{ hostname }}"
-    conf_template: internal.nginx
+- name: update conf for k8s master
+  block:
+    - name: update the k8s master conf
+      become: yes
+      import_tasks: update_conf.yml
+      vars:
+        domain: "{{ hostname }}"
+        conf_template: k8s_master.nginx
+  when: k8s_role == "master"
 
-- name: update the "{{ hostname }}"
-  become: yes
-  import_tasks: update_conf.yml
-  vars:
-    domain: "{{ noisepage_hostname }}"
-    conf_template: external.nginx
-  when: env == "production"
+- name: update conf for k8s workers
+  block:
+    - name: update the internal conf
+      become: yes
+      import_tasks: update_conf.yml
+      vars:
+        domain: "{{ hostname }}"
+        conf_template: internal.nginx
+
+    - name: update the external conf
+      become: yes
+      import_tasks: update_conf.yml
+      vars:
+        domain: "{{ noisepage_hostname }}"
+        conf_template: external.nginx
+      when: env == "production"
+  when: k8s_role == "worker"
 
 - name: test config syntax
   become: yes

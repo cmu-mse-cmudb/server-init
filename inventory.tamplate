@@ -39,6 +39,7 @@ incrudibles-testing.db.pdl.cmu.edu
 # list of vars for all testing env nodes
 port_pss = 30001
 port_grafana = 30002
+port_openapi = 30007
 
 [staging]
 # list of staging env hostname/ip
@@ -48,6 +49,7 @@ incrudibles-staging.db.pdl.cmu.edu
 # list of vars for all staging env nodes
 port_pss = 31001
 port_grafana = 31002
+port_openapi = 31007
 
 [production]
 # list of production env hostname/ip
@@ -57,3 +59,4 @@ incrudibles-production.db.pdl.cmu.edu
 # list of vars for all production env nodes
 port_pss = 32001
 port_grafana = 32002
+port_openapi = 32007
